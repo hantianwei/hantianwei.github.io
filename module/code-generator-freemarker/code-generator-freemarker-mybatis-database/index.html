@@ -1,0 +1,779 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-cn">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+<meta name="keywords" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+<meta property="og:url" content="http://www.hantianwei.com/module/code-generator-freemarker/code-generator-freemarker-mybatis-database/index.html">
+<meta property="og:site_name" content="韩天伟">
+<meta property="og:description" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2020-03-25T05:11:07.289Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+<meta name="twitter:description" content="基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.hantianwei.com/module/code-generator-freemarker/code-generator-freemarker-mybatis-database/">
+
+
+
+
+
+  <title>基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇 | 韩天伟</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <!--<span class="logo-line-before"><i></i></span>-->
+        <span class="site-title">韩天伟</span>
+        <!--<span class="logo-line-after"><i></i></span>-->
+      </a>
+    </div>
+      
+        <p class="site-subtitle">韩天伟的Blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.hantianwei.com/module/code-generator-freemarker/code-generator-freemarker-mybatis-database/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tianwei">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="韩天伟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-28T22:18:00+08:00">
+                2017-06-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/module/" itemprop="url" rel="index">
+                    <span itemprop="name">module</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/module/code-generator-freemarker/" itemprop="url" rel="index">
+                    <span itemprop="name">code-generator-freemarker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  基于Freemarker的适用于Mybatis的代码生成器-（三）数据篇
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+<li>有了配置后，接下来我们需要把数据库中的表信息和表的字段信息取出来，然后进行循环生成每个表相关代码</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
+<li><p>先来定义一下用到的实体，表 Table 字段Field</p>
+</li>
+<li><p>Table</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hantianwei.generator.model;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tianwei on 2017/6/26.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Table</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String proName;</span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDescription</span><span class="params">(String description)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.description = description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> proName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProName</span><span class="params">(String proName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.proName = proName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Field</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hantianwei.generator.model;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tianwei on 2017/6/28.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Field</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String proName;</span><br><span class="line">    <span class="keyword">private</span> String type;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> maxLength;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isNullable;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isIdentity;</span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> isPk;</span><br><span class="line">    <span class="keyword">private</span> String jdbcType;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setType</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMaxLength</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> maxLength;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMaxLength</span><span class="params">(<span class="keyword">int</span> maxLength)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.maxLength = maxLength;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIsNullable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isNullable;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsNullable</span><span class="params">(<span class="keyword">int</span> isNullable)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isNullable = isNullable;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIsIdentity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isIdentity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsIdentity</span><span class="params">(<span class="keyword">int</span> isIdentity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isIdentity = isIdentity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDescription</span><span class="params">(String description)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.description = description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> proName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProName</span><span class="params">(String proName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.proName = proName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getJdbcType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> jdbcType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setJdbcType</span><span class="params">(String jdbcType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.jdbcType = jdbcType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIsPk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isPk;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsPk</span><span class="params">(<span class="keyword">int</span> isPk)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isPk = isPk;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需要封装对数据操作类 JdbcUtil</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hantianwei.generator.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hantianwei.generator.model.Config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tianwei on 2017/6/28.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcUtil</span> </span>&#123;</span><br><span class="line">    <span class="comment">//定义一个连接对象</span></span><br><span class="line">    <span class="keyword">private</span> Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//定义连接数据库的url资源</span></span><br><span class="line">    <span class="keyword">private</span> String url = String.format(<span class="string">"jdbc:mysql://%s:%d/%s?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;&amp;autoReconnect=true&amp;useSSL=false"</span>, Config.DB_SERVER, Config.DB_PORT, Config.DB_NAME);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定义连接数据库的用户名和密码</span></span><br><span class="line">    <span class="keyword">private</span> String userName = Config.DB_USER;</span><br><span class="line">    <span class="keyword">private</span> String passWord = Config.DB_PASSWORD;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//加载数据库连接驱动</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line">            conn = DriverManager.getConnection(url, userName, passWord);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> conn;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭数据库</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeALL</span><span class="params">(Connection conn, Statement st, ResultSet rs, PreparedStatement pst)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (rs != <span class="keyword">null</span>) &#123;</span><br><span class="line">                rs.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (st != <span class="keyword">null</span>) &#123;</span><br><span class="line">                st.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">                conn.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (pst != <span class="keyword">null</span>)</span><br><span class="line">                pst.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们需要对查询的字段或表名进行驼峰式转换</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hantianwei.generator.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hantianwei.generator.model.Field;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tianwei on 2017/6/26.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringUtil</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 把数据库中的字段转换为变量类型</span></span><br><span class="line"><span class="comment">     * 如（user_id ----&gt; userId）</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> field</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">convertField</span><span class="params">(String field)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//分隔符</span></span><br><span class="line">        <span class="keyword">char</span> separator = <span class="string">'_'</span>;</span><br><span class="line">        <span class="comment">//转化为小写</span></span><br><span class="line">        String variable = field.toLowerCase();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (variable.indexOf(separator) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">char</span>[] varArray = variable.toCharArray();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; varArray.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (varArray[i] == separator &amp;&amp; i &lt; varArray.length - <span class="number">1</span>) &#123;</span><br><span class="line">                    varArray[i + <span class="number">1</span>] = Character.toUpperCase(varArray[i + <span class="number">1</span>]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            variable = <span class="keyword">new</span> String(varArray).replaceAll(<span class="string">"_"</span>, <span class="string">""</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> variable;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取字符串型的类型名</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">convertToJavaType</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">        Map&lt;String,String&gt; map = getTypesJava();</span><br><span class="line">        <span class="keyword">if</span>(map.containsKey(type))&#123;</span><br><span class="line">            <span class="keyword">return</span> map.get(type);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"String"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title">getTypesJava</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">        map.put(<span class="string">"VARCHAR"</span>, <span class="string">"String"</span>);</span><br><span class="line">        map.put(<span class="string">"CHAR"</span>, <span class="string">"String"</span>);</span><br><span class="line">        map.put(<span class="string">"BLOB"</span>, <span class="string">"byte[]"</span>);</span><br><span class="line">        map.put(<span class="string">"TEXT"</span>, <span class="string">"String"</span>);</span><br><span class="line">        map.put(<span class="string">"INTEGER"</span>, <span class="string">"Integer"</span>);</span><br><span class="line">        map.put(<span class="string">"INT"</span>, <span class="string">"Integer"</span>);</span><br><span class="line">        map.put(<span class="string">"SMALLINT"</span>, <span class="string">"Short"</span>);</span><br><span class="line">        map.put(<span class="string">"MEDIUMINT"</span>, <span class="string">"Integer"</span>);</span><br><span class="line">        map.put(<span class="string">"BIT"</span>, <span class="string">"Boolean"</span>);</span><br><span class="line">        map.put(<span class="string">"BIGINT"</span>, <span class="string">"Long"</span>);</span><br><span class="line">        map.put(<span class="string">"FLOAT"</span>, <span class="string">"Float"</span>);</span><br><span class="line">        map.put(<span class="string">"DOUBLE"</span>, <span class="string">"Double"</span>);</span><br><span class="line">        map.put(<span class="string">"DECIMAL"</span>, <span class="string">"BigDecimal"</span>);</span><br><span class="line">        map.put(<span class="string">"BOOLEAN"</span>, <span class="string">"Integer"</span>);</span><br><span class="line">        map.put(<span class="string">"TINYINT"</span>, <span class="string">"Byte"</span>);</span><br><span class="line">        map.put(<span class="string">"DATE"</span>, <span class="string">"Date"</span>);</span><br><span class="line">        map.put(<span class="string">"TIME"</span>, <span class="string">"Time"</span>);</span><br><span class="line">        map.put(<span class="string">"DATETIME"</span>, <span class="string">"Date"</span>);</span><br><span class="line">        map.put(<span class="string">"TIMESTAMP"</span>, <span class="string">"Timestamp"</span>);</span><br><span class="line">        map.put(<span class="string">"YEAR"</span>, <span class="string">"Date"</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">convertToJdbcType</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">        Map&lt;String,String&gt; map = getTypesJdbc();</span><br><span class="line">        <span class="keyword">if</span>(map.containsKey(type))&#123;</span><br><span class="line">            <span class="keyword">return</span> map.get(type);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"String"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title">getTypesJdbc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">        map.put(<span class="string">"VARCHAR"</span>, <span class="string">"VARCHAR"</span>);</span><br><span class="line">        map.put(<span class="string">"CHAR"</span>, <span class="string">"CHAR"</span>);</span><br><span class="line">        map.put(<span class="string">"BLOB"</span>, <span class="string">"BINARY"</span>);</span><br><span class="line">        map.put(<span class="string">"TEXT"</span>, <span class="string">"LONGVARCHAR"</span>);</span><br><span class="line">        map.put(<span class="string">"INTEGER"</span>, <span class="string">"INTEGER"</span>);</span><br><span class="line">        map.put(<span class="string">"INT"</span>, <span class="string">"INTEGER"</span>);</span><br><span class="line">        map.put(<span class="string">"SMALLINT"</span>, <span class="string">"SMALLINT"</span>);</span><br><span class="line">        map.put(<span class="string">"MEDIUMINT"</span>, <span class="string">"INTEGER"</span>);</span><br><span class="line">        map.put(<span class="string">"BIT"</span>, <span class="string">"BIT"</span>);</span><br><span class="line">        map.put(<span class="string">"BIGINT"</span>, <span class="string">"BIGINT"</span>);</span><br><span class="line">        map.put(<span class="string">"FLOAT"</span>, <span class="string">"REAL"</span>);</span><br><span class="line">        map.put(<span class="string">"DOUBLE"</span>, <span class="string">"DOUBLE"</span>);</span><br><span class="line">        map.put(<span class="string">"DECIMAL"</span>, <span class="string">"DECIMAL"</span>);</span><br><span class="line">        map.put(<span class="string">"TINYINT"</span>, <span class="string">"TINYINT"</span>);</span><br><span class="line">        map.put(<span class="string">"DATE"</span>, <span class="string">"DATE"</span>);</span><br><span class="line">        map.put(<span class="string">"TIME"</span>, <span class="string">"TIME"</span>);</span><br><span class="line">        map.put(<span class="string">"DATETIME"</span>, <span class="string">"TIMESTAMP"</span>);</span><br><span class="line">        map.put(<span class="string">"TIMESTAMP"</span>, <span class="string">"TIMESTAMP"</span>);</span><br><span class="line">        map.put(<span class="string">"YEAR"</span>, <span class="string">"DATE"</span>);</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Field <span class="title">getFieldPk</span><span class="params">(List&lt;Field&gt; fieldList)</span></span>&#123;</span><br><span class="line">        Field field = <span class="keyword">new</span> Field();</span><br><span class="line">        <span class="keyword">for</span> (Field item:fieldList) &#123;</span><br><span class="line">            <span class="keyword">if</span>(item.getIsPk()==<span class="number">1</span>)&#123;</span><br><span class="line">                field=item;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> field;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//首字母转小写</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toLowerCaseFirstOne</span><span class="params">(String s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(Character.isLowerCase(s.charAt(<span class="number">0</span>)))</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">new</span> StringBuilder()).append(Character.toLowerCase(s.charAt(<span class="number">0</span>))).append(s.substring(<span class="number">1</span>)).toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//首字母转大写</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toUpperCaseFirstOne</span><span class="params">(String s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(Character.isUpperCase(s.charAt(<span class="number">0</span>)))</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">new</span> StringBuilder()).append(Character.toUpperCase(s.charAt(<span class="number">0</span>))).append(s.substring(<span class="number">1</span>)).toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后是对数据库的查询</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hantianwei.generator.dao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.hantianwei.generator.model.Field;</span><br><span class="line"><span class="keyword">import</span> com.hantianwei.generator.model.Table;</span><br><span class="line"><span class="keyword">import</span> com.hantianwei.generator.util.JdbcUtil;</span><br><span class="line"><span class="keyword">import</span> com.hantianwei.generator.util.StringUtil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tianwei on 2017/6/26.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataDao</span> </span>&#123;</span><br><span class="line">    Connection conn = <span class="keyword">null</span>;</span><br><span class="line">    Statement st = <span class="keyword">null</span>;</span><br><span class="line">    ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line">    PreparedStatement pst = <span class="keyword">null</span>;</span><br><span class="line">    String sqlstr = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    String tableSql = <span class="string">"SELECT \n"</span> +</span><br><span class="line">            <span class="string">"\t              TABLE_NAME as name,\n"</span> +</span><br><span class="line">            <span class="string">"\t              TABLE_COMMENT as description \n"</span> +</span><br><span class="line">            <span class="string">"          FROM \n"</span> +</span><br><span class="line">            <span class="string">"\t              information_schema.TABLES \n"</span> +</span><br><span class="line">            <span class="string">"          WHERE \n"</span> +</span><br><span class="line">            <span class="string">"\t              TABLE_SCHEMA='%s'"</span>;</span><br><span class="line"></span><br><span class="line">    String fildSql = <span class="string">"SELECT \n"</span> +</span><br><span class="line">            <span class="string">"\t             c.COLUMN_NAME as name,\n"</span> +</span><br><span class="line">            <span class="string">"\t             c.DATA_TYPE as type,\n"</span> +</span><br><span class="line">            <span class="string">"\t             IFNULL(c.CHARACTER_MAXIMUM_LENGTH,0) as maxLength,\n"</span> +</span><br><span class="line">            <span class="string">"\t             (CASE c.IS_NULLABLE WHEN 'NO' THEN 0 ELSE 1 END) as isNullable,\n"</span> +</span><br><span class="line">            <span class="string">"\t             (CASE WHEN t.AUTO_INCREMENT&gt;0 AND k.COLUMN_NAME IS NOT NULL THEN 1 ELSE 0 END) as isIdentity,\n"</span> +</span><br><span class="line">            <span class="string">"\t             c.COLUMN_COMMENT as description,\n"</span> +</span><br><span class="line">            <span class="string">"\t             (CASE c.COLUMN_KEY WHEN 'PRI' THEN 1 ELSE 0 END) as isPk\n"</span> +</span><br><span class="line">            <span class="string">"          FROM \n"</span> +</span><br><span class="line">            <span class="string">"\t             information_schema.COLUMNS AS c\n"</span> +</span><br><span class="line">            <span class="string">"\t             INNER JOIN information_schema.`TABLES` AS t ON t.TABLE_SCHEMA=c.TABLE_SCHEMA AND t.TABLE_NAME=c.TABLE_NAME\n"</span> +</span><br><span class="line">            <span class="string">"\t             LEFT JOIN information_schema.KEY_COLUMN_USAGE k ON k.COLUMN_NAME=c.COLUMN_NAME AND c.TABLE_NAME=k.TABLE_NAME AND c.TABLE_SCHEMA=k.TABLE_SCHEMA\n"</span> +</span><br><span class="line">            <span class="string">"          WHERE \n"</span> +</span><br><span class="line">            <span class="string">"\t             c.TABLE_SCHEMA='%s'"</span> +</span><br><span class="line">            <span class="string">"\t             AND c.TABLE_NAME='%s'"</span> +</span><br><span class="line">            <span class="string">"          ORDER BY\n"</span> +</span><br><span class="line">            <span class="string">"\t             c.ORDINAL_POSITION ASC"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据表名获取所有的列信息</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> tableSchema</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> tableName</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Field&gt; <span class="title">getAllColums</span><span class="params">(String tableSchema, String tableName)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;Field&gt; fieldList = <span class="keyword">new</span> ArrayList&lt;Field&gt;();</span><br><span class="line">        JdbcUtil dbConn = <span class="keyword">new</span> JdbcUtil();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.conn = dbConn.getConnection();</span><br><span class="line">            <span class="keyword">this</span>.sqlstr = String.format(fildSql, tableSchema, tableName);</span><br><span class="line">            <span class="keyword">this</span>.st = conn.createStatement();</span><br><span class="line">            <span class="keyword">this</span>.rs = <span class="keyword">this</span>.st.executeQuery(sqlstr);</span><br><span class="line">            <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">                Field field = <span class="keyword">new</span> Field();</span><br><span class="line">                String fieldName = rs.getString(<span class="string">"name"</span>);</span><br><span class="line">                field.setName(fieldName);</span><br><span class="line">                field.setProName(StringUtil.convertField(fieldName));</span><br><span class="line">                String fieldType = rs.getString(<span class="string">"type"</span>).toUpperCase();</span><br><span class="line">                String javaType = StringUtil.convertToJavaType(fieldType);</span><br><span class="line">                field.setType(javaType);</span><br><span class="line">                field.setJdbcType(StringUtil.convertToJdbcType(fieldType));</span><br><span class="line">                field.setMaxLength(rs.getInt(<span class="string">"maxLength"</span>));</span><br><span class="line">                field.setIsNullable(rs.getInt(<span class="string">"isNullable"</span>));</span><br><span class="line">                field.setIsIdentity(rs.getInt(<span class="string">"isIdentity"</span>));</span><br><span class="line">                String desc = rs.getString(<span class="string">"description"</span>);</span><br><span class="line">                field.setDescription(desc == <span class="keyword">null</span> ? <span class="string">""</span> : desc);</span><br><span class="line">                field.setIsPk(rs.getInt(<span class="string">"isPk"</span>));</span><br><span class="line">                fieldList.add(field);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            dbConn.closeALL(conn, st, rs, pst);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fieldList;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据库名聂所有表</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> tableSchema</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Table&gt; <span class="title">getAllTables</span><span class="params">(String tableSchema)</span> </span>&#123;</span><br><span class="line">        List&lt;Table&gt; fieldList = <span class="keyword">new</span> ArrayList&lt;Table&gt;();</span><br><span class="line">        JdbcUtil dbConn = <span class="keyword">new</span> JdbcUtil();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.conn = dbConn.getConnection();</span><br><span class="line">            <span class="keyword">this</span>.sqlstr = String.format(tableSql, tableSchema);</span><br><span class="line">            <span class="keyword">this</span>.st = conn.createStatement();</span><br><span class="line">            <span class="keyword">this</span>.rs = <span class="keyword">this</span>.st.executeQuery(sqlstr);</span><br><span class="line">            <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">                Table table = <span class="keyword">new</span> Table();</span><br><span class="line">                String tableName = rs.getString(<span class="string">"name"</span>);</span><br><span class="line">                table.setName(tableName);</span><br><span class="line">                table.setProName(StringUtil.convertField(tableName));</span><br><span class="line">                String desc = rs.getString(<span class="string">"description"</span>);</span><br><span class="line">                table.setDescription(desc == <span class="keyword">null</span> ? <span class="string">""</span> : desc);</span><br><span class="line">                fieldList.add(table);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            dbConn.closeALL(conn, st, rs, pst);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fieldList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>下一节我们要进行文件生成封装</li>
+</ul>
+<ul>
+<li>开源地址：<a href="https://github.com/hantianwei/jgenerator" target="_blank" rel="noopener">https://github.com/hantianwei/jgenerator</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/freemarker/" rel="tag"># freemarker</a>
+          
+            <a href="/tags/codeGenerator/" rel="tag"># codeGenerator</a>
+          
+            <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/module/code-generator-freemarker/code-generator-freemarker-mybatis-config/" rel="next" title="基于Freemarker的适用于Mybatis的代码生成器-（二）配置篇">
+                <i class="fa fa-chevron-left"></i> 基于Freemarker的适用于Mybatis的代码生成器-（二）配置篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/java/tool/maven-nexus-install-setting/" rel="prev" title="Maven私服Nexus安装和配置">
+                Maven私服Nexus安装和配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Tianwei">
+          <p class="site-author-name" itemprop="name">Tianwei</p>
+           
+              <p class="site-description motion-element" itemprop="description">一个普通农民</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tianwei</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  <a class="theme-link">
+    hantianwei#gmail.com
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
