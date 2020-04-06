@@ -97,11 +97,11 @@
 <meta name="keywords" content="Cron表达式未来N次运行时间">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cron表达式未来N次运行时间">
-<meta property="og:url" content="http://www.hantianwei.com/java/java-cron-calc-execute-times/index.html">
+<meta property="og:url" content="http://www.hantianwei.com/java/basic/java-cron-calc-execute-times/index.html">
 <meta property="og:site_name" content="韩天伟">
 <meta property="og:description" content="Cron表达式未来N次运行时间">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2020-03-25T05:10:01.243Z">
+<meta property="og:updated_time" content="2020-04-06T05:34:26.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cron表达式未来N次运行时间">
 <meta name="twitter:description" content="Cron表达式未来N次运行时间">
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="http://www.hantianwei.com/java/java-cron-calc-execute-times/">
+  <link rel="canonical" href="http://www.hantianwei.com/java/basic/java-cron-calc-execute-times/">
 
 
 
@@ -277,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.hantianwei.com/java/java-cron-calc-execute-times/">
+    <link itemprop="mainEntityOfPage" href="http://www.hantianwei.com/java/basic/java-cron-calc-execute-times/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tianwei">
@@ -336,6 +336,17 @@
 
                 
                 
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/basic/" itemprop="url" rel="index">
+                    <span itemprop="name">basic</span>
+                  </a>
+                </span>
+
+                
+                
               
             </span>
           
@@ -367,7 +378,7 @@
       
 
       
-        <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 计算表达式近N次时间</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> cron  表达式</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> times 次数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title">calcExecuteTimes</span><span class="params">(String cron, <span class="keyword">int</span> times)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(cron)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"参数不能为空"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    CronSequenceGenerator cronSequenceGenerator = <span class="keyword">new</span> CronSequenceGenerator(cron);</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(times);</span><br><span class="line">    Date nextTimePoint = <span class="keyword">new</span> Date();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times; i++) &#123;</span><br><span class="line">        nextTimePoint = cronSequenceGenerator.next(nextTimePoint);</span><br><span class="line">        list.add(DateFormatUtils.format(nextTimePoint, <span class="string">""</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    List&lt;String&gt; list = calcExecuteTimes(<span class="string">"5 0/1 * * * ?"</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">        System.out.println(list.get(i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="Cron表达式未来N次运行时间"><a href="#Cron表达式未来N次运行时间" class="headerlink" title="Cron表达式未来N次运行时间"></a>Cron表达式未来N次运行时间</h1><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 计算表达式近N次时间</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> cron  表达式</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> times 次数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title">calcExecuteTimes</span><span class="params">(String cron, <span class="keyword">int</span> times)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(cron)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"参数不能为空"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    CronSequenceGenerator cronSequenceGenerator = <span class="keyword">new</span> CronSequenceGenerator(cron);</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(times);</span><br><span class="line">    Date nextTimePoint = <span class="keyword">new</span> Date();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; times; i++) &#123;</span><br><span class="line">        nextTimePoint = cronSequenceGenerator.next(nextTimePoint);</span><br><span class="line">        list.add(DateFormatUtils.format(nextTimePoint, <span class="string">""</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    List&lt;String&gt; list = calcExecuteTimes(<span class="string">"5 0/1 * * * ?"</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">        System.out.println(list.get(i));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>Github Gist：<a href="https://gist.github.com/hantianwei/893484100ce681e52790b1334fee3ab2" target="_blank" rel="noopener">https://gist.github.com/hantianwei/893484100ce681e52790b1334fee3ab2</a></li>
 </ul>
@@ -504,7 +515,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -550,7 +561,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.</span> <span class="nav-text">实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cron表达式未来N次运行时间"><span class="nav-number">1.</span> <span class="nav-text">Cron表达式未来N次运行时间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">1.1.</span> <span class="nav-text">实现</span></a></li></ol></li></ol></div>
             
 
           </div>
