@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Sonar在Windows下批处理">
+  <meta name="keywords" content="最长连续序列">
 
 
 
@@ -93,18 +93,21 @@
 
 
 
-<meta name="description" content="Sonar在Windows下批处理">
-<meta name="keywords" content="Sonar在Windows下批处理">
+<meta name="description" content="大厂面试算法题-最长连续序列">
+<meta name="keywords" content="最长连续序列">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sonar在Windows下批处理">
-<meta property="og:url" content="http://www.hantianwei.com/java/tool/sonar-windows-cmd-bat/index.html">
+<meta property="og:title" content="最长连续序列">
+<meta property="og:url" content="http://www.hantianwei.com/java/algorithm/longest-consecutive-sequence/index.html">
 <meta property="og:site_name" content="韩天伟">
-<meta property="og:description" content="Sonar在Windows下批处理">
+<meta property="og:description" content="大厂面试算法题-最长连续序列">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2020-03-25T05:09:49.899Z">
+<meta property="og:image" content="http://www.hantianwei.com/images/post/2020/java/algorithm/longest-consecutive-sequence/time.png">
+<meta property="og:image" content="http://www.hantianwei.com/images/post/2020/java/algorithm/longest-consecutive-sequence/memory.png">
+<meta property="og:updated_time" content="2020-04-22T05:27:30.407Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sonar在Windows下批处理">
-<meta name="twitter:description" content="Sonar在Windows下批处理">
+<meta name="twitter:title" content="最长连续序列">
+<meta name="twitter:description" content="大厂面试算法题-最长连续序列">
+<meta name="twitter:image" content="http://www.hantianwei.com/images/post/2020/java/algorithm/longest-consecutive-sequence/time.png">
 
 
 
@@ -132,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://www.hantianwei.com/java/tool/sonar-windows-cmd-bat/">
+  <link rel="canonical" href="http://www.hantianwei.com/java/algorithm/longest-consecutive-sequence/">
 
 
 
 
 
-  <title>Sonar在Windows下批处理 | 韩天伟</title>
+  <title>最长连续序列 | 韩天伟</title>
   
 
 
@@ -277,7 +280,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://www.hantianwei.com/java/tool/sonar-windows-cmd-bat/">
+    <link itemprop="mainEntityOfPage" href="http://www.hantianwei.com/java/algorithm/longest-consecutive-sequence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tianwei">
@@ -294,7 +297,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Sonar在Windows下批处理</h1>
+          <h1 class="post-title" itemprop="name headline">最长连续序列</h1>
         
 
         <div class="post-meta">
@@ -306,8 +309,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-02T12:30:00+08:00">
-                2017-11-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-22T12:00:00+08:00">
+                2020-04-22
               </time>
             
 
@@ -340,8 +343,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/tool/" itemprop="url" rel="index">
-                    <span itemprop="name">tool</span>
+                  <a href="/categories/java/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
                   </a>
                 </span>
 
@@ -364,7 +367,7 @@
 
           
               <div class="post-description">
-                  Sonar在Windows下批处理
+                  大厂面试算法题-最长连续序列
               </div>
           
 
@@ -378,17 +381,48 @@
       
 
       
-        <h3 id="在开发中用Sonar进行代码扫描，我们在测试环境中经常要进行检测，下面提供个BAT处理文档每次执行下就OK"><a href="#在开发中用Sonar进行代码扫描，我们在测试环境中经常要进行检测，下面提供个BAT处理文档每次执行下就OK" class="headerlink" title="在开发中用Sonar进行代码扫描，我们在测试环境中经常要进行检测，下面提供个BAT处理文档每次执行下就OK"></a>在开发中用Sonar进行代码扫描，我们在测试环境中经常要进行检测，下面提供个BAT处理文档每次执行下就OK</h3><ul>
-<li>我们需要在pom.xml中配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.jacoco<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jacoco-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span>&gt;</span>pre-test<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goal</span>&gt;</span>prepare-agent<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span>&gt;</span>post-test<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">phase</span>&gt;</span>test<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goal</span>&gt;</span>report<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+        <h1 id="最长连续序列"><a href="#最长连续序列" class="headerlink" title="最长连续序列"></a>最长连续序列</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><blockquote>
+<p>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。</p>
+</blockquote>
 <ul>
-<li>然后我们在项目根目录新建一个文件sonar.bat 内容如下：</li>
+<li>示例</li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.0.1:sonar -Dsonar.host.url=http://127.0.0.1:9002 -P dev -e -Dsonar.projectName="projectName"</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给定一个未排序的整数数组，找出最长连续序列的长度。</span><br><span class="line"></span><br><span class="line">要求算法的时间复杂度为 O(n)。</span><br></pre></td></tr></table></figure>
 <ul>
-<li>这样每次需要检查时，只需要执行一下这个文件就可以</li>
+<li><strong>示例:</strong></li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [100, 4, 200, 1, 3, 2]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 最长连续序列是 [1, 2, 3, 4]。它的长度为 4。</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><blockquote>
+<ul>
+<li>围绕 O(n)<em>O</em>(<em>n</em>) 的时间复杂度</li>
+<li>这些数字用一个 HashSet 保存，实现 O(1)O(1) 时间的查询</li>
+<li>我们只对 当前数字 - 1 不在哈希表里的数字，作为连续序列的第一个数字去找对应的最长序列，这是因为其他数字一定已经出现在了某个序列里。</li>
+</ul>
+</blockquote>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">longestConsecutive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Set&lt;Integer&gt; tempNums = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">        tempNums.add(num);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Integer item : tempNums) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!tempNums.contains(item - <span class="number">1</span>)) &#123;</span><br><span class="line">            <span class="keyword">int</span> currentNum = item;</span><br><span class="line">            <span class="keyword">int</span> index = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> (tempNums.contains(currentNum + <span class="number">1</span>)) &#123;</span><br><span class="line">                index++;</span><br><span class="line">                currentNum++;</span><br><span class="line">            &#125;</span><br><span class="line">            result = Math.max(result, index);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><h3 id="一、执行用时分布图表"><a href="#一、执行用时分布图表" class="headerlink" title="一、执行用时分布图表"></a>一、执行用时分布图表</h3><ul>
+<li><img src="../../../images/post/2020/java/algorithm/longest-consecutive-sequence/time.png" alt="time"></li>
+</ul>
+<h3 id="二、执行消耗内存分布图表"><a href="#二、执行消耗内存分布图表" class="headerlink" title="二、执行消耗内存分布图表"></a>二、执行消耗内存分布图表</h3><ul>
+<li><img src="../../../images/post/2020/java/algorithm/longest-consecutive-sequence/memory.png" alt="memory"></li>
+</ul>
+<h3 id="三、复杂度分析"><a href="#三、复杂度分析" class="headerlink" title="三、复杂度分析"></a>三、复杂度分析</h3><ul>
+<li>时间复杂度：O(n)O(n)</li>
+</ul>
+<blockquote>
+<p>尽管在 for 循环中嵌套了一个 while 循环，时间复杂度看起来像是二次方级别的。但其实它是线性的算法。因为只有当 currentNum 遇到了一个序列的开始， while 循环才会被执行（也就是 currentNum-1 不在数组 nums 里）， while 循环在整个运行过程中只会被迭代 nn 次。这意味着尽管看起来时间复杂度为 O(n \cdot n)O(n⋅n) ，实际这个嵌套循环只会运行 O(n + n) = O(n)O(n+n)=O(n) 次。所有的计算都是线性时间的，所以总的时间复杂度是 O(n)O(n) 的。</p>
+</blockquote>
+<ul>
+<li>空间复杂度：O(n)O(n)</li>
+</ul>
+<blockquote>
+<p>为了实现 O(1)O(1) 的查询，我们对哈希表分配线性空间，以保存 nums 数组中的 O(n)O(n) 个数字。除此以外，所需空间与暴力解法一致。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>如果代码中不加如果的if语句也是OK的，但是复杂度就高了很多，大家可以亲测</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!tempNums.contains(item - <span class="number">1</span>)) &#123;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -418,7 +452,21 @@
       
         <div class="post-tags">
           
-            <a href="/tags/sonar/" rel="tag"># sonar</a>
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+          
+            <a href="/tags/腾讯/" rel="tag"># 腾讯</a>
+          
+            <a href="/tags/阿里巴巴/" rel="tag"># 阿里巴巴</a>
+          
+            <a href="/tags/字节跳动/" rel="tag"># 字节跳动</a>
+          
+            <a href="/tags/微软/" rel="tag"># 微软</a>
+          
+            <a href="/tags/苹果/" rel="tag"># 苹果</a>
           
         </div>
       
@@ -431,8 +479,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/front/nodejs/win-10-node-js-gulp-web-server-livereload/" rel="next" title="Gulp搭建web服务器并自动刷新">
-                <i class="fa fa-chevron-left"></i> Gulp搭建web服务器并自动刷新
+              <a href="/life/macos-home-brew-install-cn/" rel="next" title="homebrew最新国内源安装方法">
+                <i class="fa fa-chevron-left"></i> homebrew最新国内源安装方法
               </a>
             
           </div>
@@ -440,10 +488,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/java/tool/sonar-exclusions-files/" rel="prev" title="sonar排除指定的目录">
-                sonar排除指定的目录 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -570,7 +614,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#在开发中用Sonar进行代码扫描，我们在测试环境中经常要进行检测，下面提供个BAT处理文档每次执行下就OK"><span class="nav-number">1.</span> <span class="nav-text">在开发中用Sonar进行代码扫描，我们在测试环境中经常要进行检测，下面提供个BAT处理文档每次执行下就OK</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#最长连续序列"><span class="nav-number">1.</span> <span class="nav-text">最长连续序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题思路"><span class="nav-number">1.2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能分析"><span class="nav-number">1.4.</span> <span class="nav-text">性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、执行用时分布图表"><span class="nav-number">1.4.1.</span> <span class="nav-text">一、执行用时分布图表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、执行消耗内存分布图表"><span class="nav-number">1.4.2.</span> <span class="nav-text">二、执行消耗内存分布图表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、复杂度分析"><span class="nav-number">1.4.3.</span> <span class="nav-text">三、复杂度分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>
