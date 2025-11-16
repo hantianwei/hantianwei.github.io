@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  
+    <meta name="keywords" content="macOs,maven,maven settings," />
+  
+
+  
+    <meta name="description" content="一位普通农民" />
+  
+  
+  
+  <title>使用目录自动切换 Maven Settings：工作区与个人区隔离配置方案 [ 韩天伟 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="/css/normalize.css">
+    
+      <link rel="stylesheet" href="/css/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    
+    <span class="title" style="text-transform:none">韩天伟</span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            
+              <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/about" class="pure-menu-link">关于</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/categories" class="pure-menu-link">分类</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+            
+          
+      
+  </ul>
+   
+</nav>
+
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        使用目录自动切换 Maven Settings：工作区与个人区隔离配置方案
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2025-11-16T14:05:00.000Z">
+        2025-11-16
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/macOs/" rel="tag">macOs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven-settings/" rel="tag">maven settings</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 5 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在日常开发中，我们经常会在不同的项目中使用不同的 Maven 配置，例如：</p>
+<ul>
+<li><strong>公司项目</strong>需要使用公司的私服（如 Nexus）</li>
+<li><strong>个人项目</strong>需要使用默认或自定义的个人仓库</li>
+</ul>
+<p>为了避免频繁手动切换 <code>settings.xml</code>，可以利用 <strong>Shell 自动判断当前工作目录</strong> 并自动为 <code>mvn</code> 命令应用对应的 <code>settings.xml</code>。</p>
+<p>本文记录一种简单实用的方案：<strong>根据目录前缀自动设置 Maven 的 alias</strong>，实现 Maven 配置的自动切换。</p>
+<hr>
+<h2 id="🎯-目标"><a href="#🎯-目标" class="headerlink" title="🎯 目标"></a>🎯 目标</h2><ul>
+<li><code>/Users/userName/data/work/**</code> → 自动使用 <code>~/.m2/settings-work.xml</code></li>
+<li><code>/Users/userName/data/personal/**</code> → 自动使用 <code>~/.m2/settings.xml</code></li>
+<li>不污染全局配置</li>
+<li>不需要手动输入 <code>mvn -s xxx</code></li>
+</ul>
+<hr>
+<h2 id="🧩-基础方案：根据目录设置-alias"><a href="#🧩-基础方案：根据目录设置-alias" class="headerlink" title="🧩 基础方案：根据目录设置 alias"></a>🧩 基础方案：根据目录设置 alias</h2><p>将以下内容添加到 <code>~/.zshrc</code> 或 <code>~/.bashrc</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Maven for company projects</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$PWD</span> == /Users/userName/data/work/** ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">alias</span> mvn=<span class="string">&#x27;mvn -s ~/.m2/settings-work.xml&#x27;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Maven for personal projects</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$PWD</span> == /Users/userName/data/personal/** ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">alias</span> mvn=<span class="string">&#x27;mvn -s ~/.m2/settings.xml&#x27;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📌-注意事项"><a href="#📌-注意事项" class="headerlink" title="📌 注意事项"></a><strong>📌 注意事项</strong></h2><h3 id="1-Shell-启动时"><a href="#1-Shell-启动时" class="headerlink" title="1. Shell 启动时"></a><strong>1. Shell 启动时</strong></h3><h3 id="PWD"><a href="#PWD" class="headerlink" title="$PWD"></a><strong>$PWD</strong></h3><h3 id="只代表“启动时的目录”"><a href="#只代表“启动时的目录”" class="headerlink" title="只代表“启动时的目录”"></a><strong>只代表“启动时的目录”</strong></h3><p>上述方案只在 <strong>打开终端时</strong> 生效，之后 cd 切换目录不会重新更新 alias。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">终端打开在 /work → 使用 settings-work.xml</span><br><span class="line">cd ~/data/personal → mvn 仍然是 work 的 settings</span><br></pre></td></tr></table></figure>
+
+<p>若你经常“在目录中打开终端”，则简单方案即可满足需求。</p>
+<hr>
+<h3 id="2-alias-会覆盖系统-mvn"><a href="#2-alias-会覆盖系统-mvn" class="headerlink" title="2. alias 会覆盖系统 mvn"></a><strong>2. alias 会覆盖系统 mvn</strong></h3><p>如果某些脚本需要原始 mvn，可使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\mvn clean install</span><br><span class="line"># 或</span><br><span class="line">command mvn clean install</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-bash-用户注意-glob-语法"><a href="#3-bash-用户注意-glob-语法" class="headerlink" title="3. bash 用户注意 glob 语法"></a><strong>3. bash 用户注意 glob 语法</strong></h3><p>bash 需要开启：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shopt -s extglob</span><br></pre></td></tr></table></figure>
+
+<p>否则 path&#x2F;** 匹配无效。</p>
+<hr>
+<h2 id="✔️-推荐方案：zsh-自动切换（支持-cd-后自动更新）"><a href="#✔️-推荐方案：zsh-自动切换（支持-cd-后自动更新）" class="headerlink" title="✔️ 推荐方案：zsh 自动切换（支持 cd 后自动更新）"></a><strong>✔️ 推荐方案：zsh 自动切换（支持 cd 后自动更新）</strong></h2><p>如果你使用 zsh，这个方案更智能。</p>
+<p>利用 chpwd 钩子，每次 cd 时自动更新 mvn alias。</p>
+<p>将以下内容加入 ~&#x2F;.zshrc：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function update_mvn_alias() &#123;</span><br><span class="line">  if [[ $PWD == /Users/userName/data/work/** ]]; then</span><br><span class="line">    alias mvn=&#x27;mvn -s ~/.m2/settings-work.xml&#x27;</span><br><span class="line">  elif [[ $PWD == /Users/userName/data/personal/** ]]; then</span><br><span class="line">    alias mvn=&#x27;mvn -s ~/.m2/settings.xml&#x27;</span><br><span class="line">  else</span><br><span class="line">    # 离开项目目录恢复默认 mvn</span><br><span class="line">    unalias mvn 2&gt;/dev/null</span><br><span class="line">  fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 每次 cd 都触发</span><br><span class="line">chpwd_functions+=(update_mvn_alias)</span><br><span class="line"></span><br><span class="line"># 终端启动时执行一次</span><br><span class="line">update_mvn_alias</span><br></pre></td></tr></table></figure>
+
+<h3 id="推荐方案优点"><a href="#推荐方案优点" class="headerlink" title="推荐方案优点"></a><strong>推荐方案优点</strong></h3><ul>
+<li><strong>自动切换，无需重新打开终端</strong></li>
+<li>离开对应目录自动恢复默认 mvn</li>
+<li>支持多个规则扩展</li>
+<li>不影响全局 mvn 使用</li>
+</ul>
+<hr>
+<h2 id="🧷-Maven-settings-示例（可选）"><a href="#🧷-Maven-settings-示例（可选）" class="headerlink" title="🧷 Maven settings 示例（可选）"></a><strong>🧷 Maven settings 示例（可选）</strong></h2><p>公司配置示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;settings&gt;</span><br><span class="line">  &lt;mirrors&gt;</span><br><span class="line">    &lt;mirror&gt;</span><br><span class="line">      &lt;id&gt;company-nexus&lt;/id&gt;</span><br><span class="line">      &lt;url&gt;https://nexus.company.com/repository/maven-public/&lt;/url&gt;</span><br><span class="line">      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;</span><br><span class="line">    &lt;/mirror&gt;</span><br><span class="line">  &lt;/mirrors&gt;</span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+
+<p>个人配置示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;settings&gt;</span><br><span class="line">  &lt;mirrors&gt;</span><br><span class="line">    &lt;mirror&gt;</span><br><span class="line">      &lt;id&gt;aliyun&lt;/id&gt;</span><br><span class="line">      &lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;</span><br><span class="line">      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;</span><br><span class="line">    &lt;/mirror&gt;</span><br><span class="line">  &lt;/mirrors&gt;</span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="📚-总结"><a href="#📚-总结" class="headerlink" title="📚 总结"></a><strong>📚 总结</strong></h2><p>通过目录自动切换 Maven settings，你可以：</p>
+<ul>
+<li>隔离公司&#x2F;个人的构建环境</li>
+<li>避免 settings 配置冲突</li>
+<li>获得更方便、更自动化的开发体验</li>
+</ul>
+
+    </div>
+
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%AF-%E7%9B%AE%E6%A0%87"><span class="toc-text">🎯 目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%A9-%E5%9F%BA%E7%A1%80%E6%96%B9%E6%A1%88%EF%BC%9A%E6%A0%B9%E6%8D%AE%E7%9B%AE%E5%BD%95%E8%AE%BE%E7%BD%AE-alias"><span class="toc-text">🧩 基础方案：根据目录设置 alias</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">📌 注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Shell-%E5%90%AF%E5%8A%A8%E6%97%B6"><span class="toc-text">1. Shell 启动时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PWD"><span class="toc-text">$PWD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AA%E4%BB%A3%E8%A1%A8%E2%80%9C%E5%90%AF%E5%8A%A8%E6%97%B6%E7%9A%84%E7%9B%AE%E5%BD%95%E2%80%9D"><span class="toc-text">只代表“启动时的目录”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-alias-%E4%BC%9A%E8%A6%86%E7%9B%96%E7%B3%BB%E7%BB%9F-mvn"><span class="toc-text">2. alias 会覆盖系统 mvn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-bash-%E7%94%A8%E6%88%B7%E6%B3%A8%E6%84%8F-glob-%E8%AF%AD%E6%B3%95"><span class="toc-text">3. bash 用户注意 glob 语法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%94%EF%B8%8F-%E6%8E%A8%E8%8D%90%E6%96%B9%E6%A1%88%EF%BC%9Azsh-%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%EF%BC%88%E6%94%AF%E6%8C%81-cd-%E5%90%8E%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%EF%BC%89"><span class="toc-text">✔️ 推荐方案：zsh 自动切换（支持 cd 后自动更新）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E6%96%B9%E6%A1%88%E4%BC%98%E7%82%B9"><span class="toc-text">推荐方案优点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%B7-Maven-settings-%E7%A4%BA%E4%BE%8B%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-text">🧷 Maven settings 示例（可选）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9A-%E6%80%BB%E7%BB%93"><span class="toc-text">📚 总结</span></a></li></ol></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/life/macos-nginx-80-port/" rel="next" title="macos nginx 启用80端口">
+          macos nginx 启用80端口
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+      </div>
+    </div>
+  
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <div id="gitalk-container"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({
+            clientID: 'da193a437864912721c1',
+            clientSecret: '3f8e43fb8de4152ff51d87c40244be6f2777417d',
+            id: window.location.pathname,
+            repo: 'hantianwei.github.io',
+            owner: 'hantianwei',
+            admin: 'hantianwei'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://github.com/hantianwei" target="_blank">GitHub</a> |
+        <a class="bottom-item" href="/links">友情链接</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a>
+    </div>
+</footer>
+
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+  
+
+</body>
+</html>
